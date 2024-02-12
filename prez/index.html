@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rebus Walentynkowy</title>
+</head>
+<body>
+
+  <div>
+    <p>Zgadnij rebus:</p>
+    <img src="maszt.jpg" alt="maszt" style="width: 100px;">
+    <span>-t(chodzi o to ze to maszt jak cos)</span>
+    <img src="motyl.jpg" alt="motyl" style="width: 100px;">
+    <span>-tyl</span>
+    <span>Frajer - Fra - R</span>
+    <img src="ser.jpg" alt="ser" style="width: 100px;">
+    <span> + </span>
+    <img src="duch.jpg" alt="duch" style="width: 100px;">
+    <span> - uch </span>
+    <img src="ucho.jpg" alt="ucho" style="width: 100px;">
+    
+    <br><br>
+    <input type="text" id="rebusInput" placeholder="Wpisz odpowiedź">
+    <button onclick="checkRebus()">Sprawdź</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function checkRebus() {
+      var inputText = document.getElementById('rebusInput').value.toLowerCase();
+
+      if (inputText.includes('masz moje serducho')) {
+        document.getElementById('result').innerHTML = 'Masz moje serduszko kochanie, wesołych walentynek!';
+        document.body.innerHTML += '<img src="serduszko.png" alt="serduszko" style="width: 200px;">';
+      } else {
+        document.getElementById('result').innerHTML = 'Jeszcze raz kochanie';
+      }
+    }
+  </script>
+
+</body>
+</html>
