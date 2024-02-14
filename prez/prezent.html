@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,8 @@
   <style>
     body {
       background-color: #F2BDCD; /* Kolor tła */
+	  font-family: Arial, sans-serif; /* Wybór czcionki */
+	  text-align: center; /* Wyśrodkowanie tekstu */
     }
     .background-image {
       position: fixed;
@@ -21,6 +24,34 @@
     #rebusContainer {
       position: relative;
       z-index: 1; /* Ustawienie zawartości nad tłem */
+	  margin: 20px auto; /* Wycentrowanie */
+      background-color: #fff; /* Tło */
+      padding: 20px; /* Wypełnienie */
+      max-width: 500px; /* Maksymalna szerokość */
+	  }
+    #winnerMessage {
+      font-size: 36px; /* Rozmiar czcionki */
+      color: #FF0000; /* Kolor czerwony */
+      font-weight: bold; /* Pogrubienie */
+    }
+
+    /* Additional styles for Tic Tac Toe */
+    #ticTacToeContainer {
+      display: none; /* Ukrycie planszy na początku */
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 5px;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 100px;
+      background-color: #FFF;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -47,16 +78,95 @@
     <p id="result"></p>
   </div>
 
+  <div id="ticTacToeContainer" style="display:none;">
+    <p>Gramy w kółko i krzyżyk:</p>
+    <div class="grid" id="ticTacToeGrid"></div>
+    <p id="ticTacToeResult"></p>
+  </div>
+
   <script>
+    var rebusGuessed = false;
+
     function checkRebus() {
       var inputText = document.getElementById('rebusInput').value.toLowerCase();
 
       if (inputText.includes('masz moje serducho')) {
         document.getElementById('result').innerHTML = 'Masz moje serduszko kochanie, wesołych walentynek!';
+        document.getElementById('ticTacToeContainer').style.display = 'block';
+        rebusGuessed = true;
       } else {
         document.getElementById('result').innerHTML = 'Jeszcze raz kochanie';
       }
     }
+
+    // Your existing JavaScript for the Rebus here
+
+    // New JavaScript for Tic Tac Toe
+    var currentPlayer = 'X';
+    var gameBoard = ['', '', '', '', '', '', '', '', ''];
+    var gameOver = false;
+
+    function initializeTicTacToe() {
+      var ticTacToeGrid = document.getElementById('ticTacToeGrid');
+
+      for (var i = 0; i < 9; i++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.id = 'cell' + i;
+        cell.addEventListener('click', function() {
+          if (!gameOver && gameBoard[this.id.charAt(4)] === '') {
+            makeMove(this.id.charAt(4));
+            checkWinner();
+            if (!gameOver) {
+              botMove();
+              checkWinner();
+            }
+          }
+        });
+        ticTacToeGrid.appendChild(cell);
+      }
+    }
+
+    function makeMove(index) {
+      gameBoard[index] = currentPlayer;
+      document.getElementById('cell' + index).innerHTML = currentPlayer;
+      currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+    }
+
+    function botMove() {
+      // You can implement a simple bot logic here
+      // For simplicity, let's make a random move
+      var availableMoves = [];
+      for (var i = 0; i < gameBoard.length; i++) {
+        if (gameBoard[i] === '') {
+          availableMoves.push(i);
+        }
+      }
+
+      var randomIndex = Math.floor(Math.random() * availableMoves.length);
+      makeMove(availableMoves[randomIndex]);
+    }
+
+    function checkWinner() {
+      // Your existing rebus checking logic
+
+      // Tic Tac Toe winning logic
+      // Implement your own logic for winning combinations
+      // For simplicity, let's just check rows for a winner
+      for (var i = 0; i < 9; i += 3) {
+        if (gameBoard[i] !== '' && gameBoard[i] === gameBoard[i + 1] && gameBoard[i] === gameBoard[i + 2]) {
+          document.getElementById('ticTacToeResult').innerHTML = 'Wesołych Walentynek!';
+          gameOver = true;
+          break;
+        }
+      }
+
+      if (gameOver && rebusGuessed) {
+        document.getElementById('ticTacToeResult').innerHTML = 'Wesołych Walentynek!';
+      }
+    }
+
+    initializeTicTacToe();
   </script>
 
 </body>
